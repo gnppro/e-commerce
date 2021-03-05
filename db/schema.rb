@@ -10,11 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_03_201605) do
+ActiveRecord::Schema.define(version: 2021_03_05_083433) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+# Could not dump table "attributes" because of following StandardError
+#   Unknown type 'options_order_by' for column 'options_order_by'
 
 # Could not dump table "products" because of following StandardError
 #   Unknown type 'product_kind' for column 'kind'
