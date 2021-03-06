@@ -1,6 +1,6 @@
 class Api::V1::ProductsController < ApplicationController
   protect_from_forgery with: :null_session
-  before_action :set_product, only: %i[ show update destroy ]
+  before_action :set_product, only: %i[ update destroy ]
 
   # GET /products
   def index
@@ -10,6 +10,7 @@ class Api::V1::ProductsController < ApplicationController
 
   # GET /products/:uuid
   def show
+    @product = Product.find_by(slug: params[:id])
     render json: @product, status: :ok
   end
 
@@ -87,11 +88,11 @@ class Api::V1::ProductsController < ApplicationController
       :status,
       :stock_status,
       :backorders,
-      :meta_data,
-      :related_ids,
-      :upsell_ids,
-      :cross_sell_ids,
-      dimensions: [:w, :h, :l],
+      :meta_data => {},
+      :related_ids => [],
+      :upsell_ids => [],
+      :cross_sell_ids => [],
+      :dimensions => [:w, :h, :l],
     )
   end
 end
