@@ -5,6 +5,7 @@ class Product < ApplicationRecord
   store :dimensions, accessors: [:w, :h, :l], coder: JSON
 
   attr_readonly :price
+  attr_readonly :slug
   attr_readonly :on_sale
   attr_readonly :purchasable
   attr_readonly :total_sales
@@ -26,6 +27,7 @@ class Product < ApplicationRecord
     self.status ||= 'publish'
     self.stock_status ||= 'instock'
     self.backorders ||= 'no'
+    self.slug = self.name.parameterize
     self.featured = false if self.featured.nil?
     self.purchasable = false if self.purchasable.nil?
     self.virtual = false if self.virtual.nil?
