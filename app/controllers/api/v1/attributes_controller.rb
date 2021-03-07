@@ -10,7 +10,7 @@ class Api::V1::AttributesController < ApplicationController
 
   # GET /attributes/:uuid
   def show
-    render json: @attribute, status: :ok
+    render json: @attribute, include: :options, status: :ok
   end
 
   # POST /attributes
