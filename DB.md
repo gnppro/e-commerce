@@ -63,7 +63,6 @@
 | shipping_class        | string                                    |         |
 | shipping_class_id     | integer                                   |         |
 
-
 ## attributes
 
 | Attribute        | Type    | Default |
@@ -89,14 +88,6 @@
 | order        | integer  | 0       |
 | count        | interger | 0       |
 
-## attribute_option_variants (attribute_variants)
-<!-- product_id -->
-<!-- attribute_id -->
-| Attribute           | Type | Default |
-| ------------------- | ---- | ------- |
-| variant_id          | uuid |         |
-| attribute_option_id | uuid |         |
-
 # variants
 
 | Attribute  | Type    | Default |
@@ -105,11 +96,16 @@
 | price      | float   | 0.0     |
 | sku        | string  | ''      |
 | barcode    | string  | ''      |
-| stock      | integer |         |
-| alt_name   | string  |         |
+| stock      | integer | 0       |
+| alt_name   | string  | ''      |
 
-
-
+## attribute_option_variants (option_variants)
+<!-- product_id -->
+<!-- attribute_id -->
+| Attribute  | Type | Default |
+| ---------- | ---- | ------- |
+| variant_id | uuid |         |
+| option_id  | uuid |         |
 
 ```
 {
@@ -140,4 +136,51 @@
   ],
   "allowOutOfStockPurchases": false
 }
+```
+
+```
+
+ActiveRecord::Schema.define(version: 2018_02_02_154750) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "products", force: :cascade do |t|
+    t.string "name"
+  end
+
+  create_table "attributes", force: :cascade do |t|
+    # t.bigint "product_id"
+    # t.index ["product_id"], name: "index_attributes_on_product_id"
+    t.string "name"
+  end
+
+  create_table "options", force: :cascade do |t|
+    t.bigint "attribute_id"
+    t.string "name"
+    t.index ["attribute_id"], name: "index_options_on_attribute_id"
+  end
+
+  create_table "variants", force: :cascade do |t|
+    t.bigint "product_id"
+    t.string "sku"
+    t.integer "price_cents", default: 0, null: false
+    t.string "price_currency", default: "USD", null: false
+    t.boolean "is_master"
+    t.index ["product_id"], name: "index_variants_on_product_id"
+  end
+
+  create_table "attribute_option_variants", force: :cascade do |t|
+    t.bigint "option_id"
+    t.bigint "variant_id"
+    t.index ["option_id"], name: "index_attribute_option_variants_on_option_id"
+    t.index ["variant_id"], name: "index_attribute_option_variants_on_variant_id"
+  end
+
+  add_foreign_key "attributes", "products"
+  add_foreign_key "options", "attributes"
+  add_foreign_key "variants", "products"
+  add_foreign_key "attribute_option_variants", "options"
+  add_foreign_key "attribute_option_variants", "variants"
+end
+
 ```
