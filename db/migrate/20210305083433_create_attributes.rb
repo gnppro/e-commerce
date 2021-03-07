@@ -13,7 +13,6 @@ class CreateAttributes < ActiveRecord::Migration[6.1]
       t.integer :count, null: false, default: 0
       t.boolean :visible, null: false
       t.boolean :variation, null: false
-      t.string :options, array: true, default: []
       t.column :options_order_by, :options_order_by, default: 'order'
     end
   end

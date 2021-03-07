@@ -1,4 +1,6 @@
 class Attribute < ApplicationRecord
+  has_many :options, dependent: :destroy
+
   after_initialize :set_defaults, unless: :persisted?
   before_create :set_position
 
